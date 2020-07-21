@@ -12,6 +12,7 @@ import QuickLook
         tempCommandId = _command.callbackId;
 
         let myUrl = _command.arguments[0] as! String;
+        let isAnimated = _command.arguments[1] as! Bool;
         self.downloadfile(withName: myUrl,completion: {(success, fileLocationURL, callback) in
             if success {
 
@@ -20,7 +21,7 @@ import QuickLook
                 previewController.dataSource = self;
                 previewController.delegate = self;
                 DispatchQueue.main.async(execute: {
-                    self.viewController?.present(previewController, animated: true, completion: nil);
+                    self.viewController?.present(previewController, animated: isAnimated, completion: nil);
                     if self.viewController!.isViewLoaded {
                         pluginResult = CDVPluginResult(
                             status: CDVCommandStatus_OK,
