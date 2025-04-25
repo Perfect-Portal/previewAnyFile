@@ -4,7 +4,7 @@ import QuickLook
     lazy var previewItem = NSURL()
     lazy var tempCommandId = String()
     @objc(preview:)
-    func preview(_command: CDVInvokedUrlCommand){
+    @MainActor func preview(_command: CDVInvokedUrlCommand){
 
         var pluginResult = CDVPluginResult(
             status: CDVCommandStatus_ERROR
@@ -59,7 +59,7 @@ import QuickLook
         })
     }
 
-    func downloadfile(withName myUrl: String,completion: @escaping (_ success: Bool,_ fileLocation: URL? , _ callback : NSError?) -> Void){
+    @MainActor func downloadfile(withName myUrl: String,completion: @escaping (_ success: Bool,_ fileLocation: URL? , _ callback : NSError?) -> Void){
         let  url = myUrl.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)!;
         var itemUrl: URL? = Foundation.URL(string: url);
         if FileManager.default.fileExists(atPath: itemUrl!.path) {
@@ -96,7 +96,7 @@ import QuickLook
 
     }
 
-    func dismissPreviewCallback(){
+    @MainActor func dismissPreviewCallback(){
         print(tempCommandId)
         let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: "CLOSING");
         self.commandDelegate!.send(pluginResult, callbackId: tempCommandId);
@@ -104,7 +104,7 @@ import QuickLook
 
 }
 
-extension PreviewAnyFile: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
+extension PreviewAnyFile: QLPreviewControllerDataSource, @preconcurrency QLPreviewControllerDelegate {
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return 1
     }
