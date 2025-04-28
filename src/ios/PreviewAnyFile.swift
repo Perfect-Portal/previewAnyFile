@@ -105,15 +105,15 @@ import QuickLook
 }
 
 extension PreviewAnyFile: QLPreviewControllerDataSource, @preconcurrency QLPreviewControllerDelegate {
-    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+    @MainActor func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return 1
     }
 
-    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+    @MainActor func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         return self.previewItem as QLPreviewItem
     }
 
-    func previewControllerWillDismiss(_ controller: QLPreviewController) {
+    @MainActor func previewControllerWillDismiss(_ controller: QLPreviewController) {
         self.dismissPreviewCallback();
 
     }
